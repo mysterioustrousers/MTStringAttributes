@@ -1,7 +1,7 @@
 MTStringAttributes
 ==================
 
-Easier way to create an attributes dictionary for NSAttributedString
+An easier way to create an attributes dictionary for NSAttributedString
 
 
 ## Installation
