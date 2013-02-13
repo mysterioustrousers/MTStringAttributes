@@ -1,0 +1,11 @@
+
+PODS:
+- Slash (0.0.1)
+
+DEPENDENCIES:
+- Slash (~> 0.0.1)
+
+SPEC CHECKSUMS:
+  Slash: f3b9715213484947e0f5a4f9db7a997ab3793c31
+
+COCOAPODS: 0.16.2

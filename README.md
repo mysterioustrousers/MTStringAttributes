@@ -15,6 +15,8 @@ pod? => https://github.com/CocoaPods/CocoaPods/
 
 ## Example Usage
 
+    #include <MTStringAttributes.h>
+
 Create an attributes object
 
     MTStringAttributes *attributes = [[MTStringAttributes alloc] init];
@@ -50,6 +52,20 @@ Shadow
 Finally
 
     NSAttributedString *str     = [[NSAttributedString alloc] initWithString:@"The attributed string!" attributes:[attributes dictionary]];
+
+
+## Parser
+
+
+Relying on [Slash](https://github.com/chrisdevereux/Slash), MTStringParser allows you to add styles to
+tags and then generate attributed strings from markup of those tags.
+
+```
+#include <MTStringParser.h>
+
+[[MTStringParser sharedParser] addStyleWithTagName:@"red" font:[UIFont systemFontOfSize:12] color:[UIColor redColor]];
+NSAttributedString *string = [[MTStringParser sharedParser] attributedStringFromMarkup:@"This is a <red>red section</red>"];
+```
 
 ## Contributing
 

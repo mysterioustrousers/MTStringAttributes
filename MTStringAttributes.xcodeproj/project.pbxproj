@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C20BBFF1DC141389528F702 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A560F9CCC1D6477CB95BF43F /* libPods.a */; };
 		C25AD64216CB37CC00488780 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25AD64116CB37CC00488780 /* Foundation.framework */; };
 		C25AD64716CB37CC00488780 /* MTStringAttributes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C25AD64616CB37CC00488780 /* MTStringAttributes.h */; };
 		C25AD64916CB37CC00488780 /* MTStringAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C25AD64816CB37CC00488780 /* MTStringAttributes.m */; };
@@ -18,6 +19,8 @@
 		C25AD66A16CB37EF00488780 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25AD66916CB37EF00488780 /* UIKit.framework */; };
 		C25AD66C16CB564D00488780 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25AD66B16CB564D00488780 /* CoreGraphics.framework */; };
 		C25AD66D16CB5C4500488780 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25AD66916CB37EF00488780 /* UIKit.framework */; };
+		C25AD67016CB69AC00488780 /* MTStringParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C25AD66F16CB69AC00488780 /* MTStringParser.m */; };
+		C2B10ACC16CB721200FB4F5D /* MTStringParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B10ACB16CB721200FB4F5D /* MTStringParserTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		189A984AEC744EA0B4187584 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		A560F9CCC1D6477CB95BF43F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C25AD63E16CB37CC00488780 /* libMTStringAttributes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMTStringAttributes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C25AD64116CB37CC00488780 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C25AD64516CB37CC00488780 /* MTStringAttributes-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MTStringAttributes-Prefix.pch"; sourceTree = "<group>"; };
@@ -57,6 +62,10 @@
 		C25AD65F16CB37CC00488780 /* MTStringAttributesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTStringAttributesTests.m; sourceTree = "<group>"; };
 		C25AD66916CB37EF00488780 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C25AD66B16CB564D00488780 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C25AD66E16CB69AC00488780 /* MTStringParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTStringParser.h; sourceTree = "<group>"; };
+		C25AD66F16CB69AC00488780 /* MTStringParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTStringParser.m; sourceTree = "<group>"; };
+		C2B10ACA16CB721200FB4F5D /* MTStringParserTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTStringParserTests.h; sourceTree = "<group>"; };
+		C2B10ACB16CB721200FB4F5D /* MTStringParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTStringParserTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +76,7 @@
 				C25AD64216CB37CC00488780 /* Foundation.framework in Frameworks */,
 				C25AD66C16CB564D00488780 /* CoreGraphics.framework in Frameworks */,
 				C25AD66A16CB37EF00488780 /* UIKit.framework in Frameworks */,
+				1C20BBFF1DC141389528F702 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +101,7 @@
 				C25AD65816CB37CC00488780 /* MTStringAttributesTests */,
 				C25AD64016CB37CC00488780 /* Frameworks */,
 				C25AD63F16CB37CC00488780 /* Products */,
+				189A984AEC744EA0B4187584 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,6 +121,7 @@
 				C25AD64116CB37CC00488780 /* Foundation.framework */,
 				C25AD65016CB37CC00488780 /* SenTestingKit.framework */,
 				C25AD66916CB37EF00488780 /* UIKit.framework */,
+				A560F9CCC1D6477CB95BF43F /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -117,6 +129,8 @@
 		C25AD64316CB37CC00488780 /* MTStringAttributes */ = {
 			isa = PBXGroup;
 			children = (
+				C25AD66E16CB69AC00488780 /* MTStringParser.h */,
+				C25AD66F16CB69AC00488780 /* MTStringParser.m */,
 				C25AD64616CB37CC00488780 /* MTStringAttributes.h */,
 				C25AD64816CB37CC00488780 /* MTStringAttributes.m */,
 				C25AD64416CB37CC00488780 /* Supporting Files */,
@@ -137,6 +151,8 @@
 			children = (
 				C25AD65E16CB37CC00488780 /* MTStringAttributesTests.h */,
 				C25AD65F16CB37CC00488780 /* MTStringAttributesTests.m */,
+				C2B10ACA16CB721200FB4F5D /* MTStringParserTests.h */,
+				C2B10ACB16CB721200FB4F5D /* MTStringParserTests.m */,
 				C25AD65916CB37CC00488780 /* Supporting Files */,
 			);
 			path = MTStringAttributesTests;
@@ -161,6 +177,7 @@
 				C25AD63A16CB37CC00488780 /* Sources */,
 				C25AD63B16CB37CC00488780 /* Frameworks */,
 				C25AD63C16CB37CC00488780 /* CopyFiles */,
+				2E593D2A81454ADDA94FD44D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -229,6 +246,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2E593D2A81454ADDA94FD44D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
 		C25AD64D16CB37CC00488780 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -250,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C25AD64916CB37CC00488780 /* MTStringAttributes.m in Sources */,
+				C25AD67016CB69AC00488780 /* MTStringParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C25AD66016CB37CC00488780 /* MTStringAttributesTests.m in Sources */,
+				C2B10ACC16CB721200FB4F5D /* MTStringParserTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,11 +371,11 @@
 		};
 		C25AD66416CB37CC00488780 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 189A984AEC744EA0B4187584 /* Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/MTStringAttributes.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MTStringAttributes/MTStringAttributes-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -350,11 +383,11 @@
 		};
 		C25AD66516CB37CC00488780 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 189A984AEC744EA0B4187584 /* Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/MTStringAttributes.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MTStringAttributes/MTStringAttributes-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -409,6 +442,7 @@
 				C25AD66516CB37CC00488780 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C25AD66616CB37CC00488780 /* Build configuration list for PBXNativeTarget "MTStringAttributesTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +451,7 @@
 				C25AD66816CB37CC00488780 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
