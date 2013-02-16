@@ -72,36 +72,42 @@ NSAttributedString *string = [[MTStringParser sharedParser]
                                 attributedStringFromMarkup:@"This is a <red>red section</red>"];
 ```
 
-And like a beautiful symphony, they work together like so:
+###And like a beautiful symphony, they work together like so:
 
-```
-MTStringAttributes *attributes = [[MTStringAttributes alloc] init];
-attributes.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
-attributes.textColor = [UIColor blackColor];
+Easily create a string attributes object
 
-NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-paragraphStyle.firstLineHeadIndent = 15;
-attributes.paragraphStyle = paragraphStyle;
+    MTStringAttributes *attributes  = [[MTStringAttributes alloc] init];
+    attributes.font                 = [UIFont fontWithName:@"HelveticaNeue" size:14];
+    attributes.textColor            = [UIColor blackColor];
 
-[[MTStringParser sharedParser] setDefaultAttributes:attributes];
-[[MTStringParser sharedParser] addStyleWithTagName:@"relative-time"
-                                              font:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]
-                                             color:[UIColor colorWithRed:215.0/255.0 green:0 blue:0 alpha:1]];
+Add this as the default for the whole string we're about to parse
 
-- (void)addStyleWithTagName:@"em"
-                       font:[UIFont systemFontOfSize:14]
-                      color:[UIColor whiteColor]
-            backgroundColor:[UIColor blackColor]
-              strikethrough:NO
-                  underline:YES;
+    [[MTStringParser sharedParser] setDefaultAttributes:attributes];
 
-NSString *markup = [NSString stringWithFormat:@"You can have a <em>complex<em> string that  \
-uses <em>tags</em> to define where you want <em>styles</em> to be defined. You needed       \
-this <relative-time>%@</relative-time>.", timeAgo];
+Define a style for a tag called `<relative-time>` that uses this font and has this color:
 
-NSAttributedString *attributedString = [[MTStringParser sharedParser]
-                                            attributedStringFromMarkup:@"This is a <red>red section</red>"];
-```
+    [[MTStringParser sharedParser] addStyleWithTagName:@"relative-time"
+                                                  font:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]
+                                                 color:[UIColor colorWithRed:215.0/255.0 green:0 blue:0 alpha:1]];
+
+And easily add another tag that has a font, color, background color and is underlined:
+
+    [[MTStringParser sharedparser] addStyleWithTagName:@"em"
+                                                  font:[UIFont systemFontOfSize:14]
+                                                 color:[UIColor whiteColor]
+                                       backgroundColor:[UIColor blackColor]
+                                         strikethrough:NO
+                                             underline:YES];
+
+Now write the markup using the tags you defined styles for:
+
+    NSString *markup = [NSString stringWithFormat:@"You can have a <em>complex<em> string that  \
+    uses <em>tags</em> to define where you want <em>styles</em> to be defined. You needed       \
+    this <relative-time>%@</relative-time>.", timeAgo];
+
+And (  ( (BOOM) )  ), your attributed string:
+
+    NSAttributedString *attributedString = [[MTStringParser sharedParser] attributedStringFromMarkup:markup];
 
 ## Contributing
 
