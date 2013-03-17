@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
   s.source_files  = 'MTStringAttributes/*.{h,m}'
   s.frameworks    = 'CoreGraphics', 'UIKit', 'Foundation'
   s.requires_arc  = true
-  s.dependency    'Slash', '~> 0.0.1'
+  s.dependency    'Slash', '~> 0.1'
 end
