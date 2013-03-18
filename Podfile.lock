@@ -1,11 +1,17 @@
 
 PODS:
-- Slash (0.0.1)
+- Slash (0.1):
+  - Slash/arc (= 0.1)
+  - Slash/no-arc (= 0.1)
+- Slash/arc (0.1)
+- Slash/no-arc (0.1)
 
 DEPENDENCIES:
-- Slash (~> 0.0.1)
+- Slash (~> 0.1)
 
 SPEC CHECKSUMS:
-  Slash: f3b9715213484947e0f5a4f9db7a997ab3793c31
+  Slash: d594faa2126764cad15ceb01b251e2e6577743d9
+  Slash/arc: d594faa2126764cad15ceb01b251e2e6577743d9
+  Slash/no-arc: d594faa2126764cad15ceb01b251e2e6577743d9
 
-COCOAPODS: 0.16.2
+COCOAPODS: 0.16.4

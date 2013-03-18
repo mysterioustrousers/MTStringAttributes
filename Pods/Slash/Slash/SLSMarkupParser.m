@@ -7,36 +7,51 @@
 //
 
 #import "SLSMarkupParser.h"
-#import "SLSMarkupParser+BisonContext.h"
-#import "SLSMarkupParserImpl.gen.h"
-#import "SLSMarkupLexer.gen.h"
+#import "SLSTagParser.h"
+#import "SLSTaggedRange.h"
+#import "SLSErrors.h"
+
 #import <dlfcn.h>
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#define FONT_CLASS UIFont
 #define SUPPORTS_STANDARD_ATTRIBUTES (dlsym(RTLD_DEFAULT, "NSFontAttributeName") != NULL)
+#define FONT_CLASS UIFont
+#define COLOR_CLASS UIColor
 
 #else
 #import <AppKit/AppKit.h>
-#define FONT_CLASS NSFont
 #define SUPPORTS_STANDARD_ATTRIBUTES YES
+#define FONT_CLASS NSFont
+#define COLOR_CLASS NSColor
 
 #endif
 
-int slashparse (yyscan_t scanner, SLSMarkupParser *ctx);
+#define SetError(ptr, val) if (ptr){ *(ptr) = (val); }
 
-@interface SLSMarkupParser ()
-@property (strong, readonly, nonatomic) NSMutableArray *taggedRangeStack;
-@end
 
-extern int slashdebug;
 
 @implementation SLSMarkupParser {
-    NSDictionary *_attributeDict;
-    NSMutableAttributedString *_outAttStr;
-    NSError *_error;
+    NSDictionary *_styleDictionary;
 }
+
+
++ (NSDictionary *)defaultAttributes
+{
+    if (SUPPORTS_STANDARD_ATTRIBUTES) {
+        return @{
+            NSFontAttributeName             : [FONT_CLASS fontWithName:@"HelveticaNeue" size:14],
+            NSForegroundColorAttributeName  : [COLOR_CLASS blackColor],
+            NSKernAttributeName             : @0,
+            NSParagraphStyleAttributeName   : [NSParagraphStyle defaultParagraphStyle],
+            NSStrokeColorAttributeName      : [COLOR_CLASS blackColor],
+            NSStrokeWidthAttributeName      : @0
+        };
+    } else {
+        return @{};
+    }
+}
+
 
 + (NSDictionary *)defaultStyle
 {
@@ -49,8 +64,8 @@ extern int slashdebug;
             return;
         }
         
-        style = [@{
-            @"$default" : @{NSFontAttributeName  : [FONT_CLASS fontWithName:@"HelveticaNeue" size:14]},
+        style = @{
+            @"$default" : [self defaultAttributes],
             @"strong"   : @{NSFontAttributeName  : [FONT_CLASS fontWithName:@"HelveticaNeue-Bold" size:14]},
             @"em"       : @{NSFontAttributeName  : [FONT_CLASS fontWithName:@"HelveticaNeue-Italic" size:14]},
             @"emph"     : @{NSFontAttributeName  : [FONT_CLASS fontWithName:@"HelveticaNeue-Italic" size:14]},
@@ -60,51 +75,47 @@ extern int slashdebug;
             @"h4"       : @{NSFontAttributeName  : [FONT_CLASS fontWithName:@"HelveticaNeue-Medium" size:24]},
             @"h5"       : @{NSFontAttributeName  : [FONT_CLASS fontWithName:@"HelveticaNeue-Medium" size:18]},
             @"h6"       : @{NSFontAttributeName  : [FONT_CLASS fontWithName:@"HelveticaNeue-Medium" size:16]}
-        } retain];
+        };
     });
     
     return style;
 }
 
+
++ (NSDictionary *)styleDictionaryByApplyingDefaultAttributes:(NSDictionary *)defaultAttributes toDictionary:(NSDictionary *)userStyle
+{
+    NSMutableDictionary *defaultTagStyle = [defaultAttributes mutableCopy];
+    [defaultTagStyle setValuesForKeysWithDictionary:[userStyle objectForKey:@"$default"]];
+    
+    NSMutableDictionary *result = [userStyle mutableCopy];
+    [result setObject:defaultTagStyle forKey:@"$default"];
+    
+    return result;
+}
+
+
 + (NSAttributedString *)attributedStringWithMarkup:(NSString *)string style:(NSDictionary *)style error:(NSError **)error
 {
-    if (!string) {
-        return nil;
+    if (!string || [string length] == 0) {
+        return [[NSAttributedString alloc] init];
     }
     
-    if ([string length] == 0) {
-        return [[[NSAttributedString alloc] init] autorelease];
-    }
+    // Workaround for bug in UITextField. See: https://github.com/chrisdevereux/Slash/issues/4s
+    NSDictionary *styleWithDefaults = [self styleDictionaryByApplyingDefaultAttributes:[self defaultAttributes] toDictionary:style];
     
-    SLSMarkupParser *parser = [[self alloc] initWithTagDictionary:style];
-    [parser parseString:string];
+    SLSMarkupParser *parser = [[self alloc] initWithTagDictionary:styleWithDefaults];
     
-    NSAttributedString *attributedString = nil;
-    if (parser.error) {
-        if (error) {
-            *error = [[parser.error retain] autorelease];
-        }
-    } else {
-        [parser applyAttributes];
-        attributedString = [[parser.outAttStr copy] autorelease];
-        
-        if (parser.error) {
-            if (error) {
-                *error = [[parser.error retain] autorelease];
-            }
-            
-            attributedString = nil;
-        }
-    }
-    
-    [parser release];
-    return attributedString;
+    return [parser parseMarkup:string error:error];
 }
+
 
 + (NSAttributedString *)attributedStringWithMarkup:(NSString *)string error:(NSError **)error
 {
     return [self attributedStringWithMarkup:string style:[self defaultStyle] error:error];
 }
+
+
+
 
 - (id)initWithTagDictionary:(NSDictionary *)tagDict
 {
@@ -112,87 +123,65 @@ extern int slashdebug;
     if (!self)
         return nil;
     
-    _attributeDict = [tagDict retain];
-    _outAttStr = [[NSMutableAttributedString alloc] init];
-    _taggedRangeStack = [[NSMutableArray alloc] init];
+    _styleDictionary = [tagDict copy];
     
     return self;
 }
 
-- (void)dealloc
-{
-    [_attributeDict release];
-    [_outAttStr release];
-    [_taggedRangeStack release];
-    [_error release];
-    [super dealloc];
-}
 
-- (void)parseString:(NSString *)string
+- (NSAttributedString *)parseMarkup:(NSString *)markup error:(NSError **)errorOut
 {
-    yyscan_t scanner;
+    NSParameterAssert(markup);
     
-    slashlex_init(&scanner);
-    YY_BUFFER_STATE buf = slash_scan_string([string UTF8String], scanner);
+    SLSTagParser *tagParser = [[SLSTagParser alloc] init];
+    [tagParser parseMarkup:markup];
     
-    slashparse(scanner, self);
-    
-    slash_delete_buffer(buf, scanner);
-    slashlex_destroy(scanner);
-}
-
-- (void)applyAttributes
-{
-    if (!_attributeDict) {
-        return;
+    if (tagParser.error) {
+        SetError(errorOut, tagParser.error);
+        return nil;
     }
     
-    // Parser produces an array of tag ranges, outermost tag
-    // at index 0. Apply the default style to the whole string,
-    // then work inwards, applying the attributes defined for the tag
+    NSMutableAttributedString *styledText = tagParser.attributedString;
+
+    if ([self applyTags:tagParser.taggedRanges toAttributedString:styledText error:errorOut]) {
+        return styledText;
+    } else {
+        return nil;
+    }
+}
+
+
+- (BOOL)applyTags:(NSArray *)tags toAttributedString:(NSMutableAttributedString *)styledText error:(NSError **)errorOut
+{
+    NSParameterAssert(tags);
+    NSParameterAssert(styledText);
+    NSAssert(_styleDictionary, @"Slash internal error: style dictionary should be defined");
     
-    [_outAttStr setAttributes:[_attributeDict objectForKey:@"$default"] range:NSMakeRange(0, [_outAttStr length])];
+    // Apply the default style to the whole string, then work inwards, applying the attributes defined for each tag
+    // combined with the existing attributes.
     
-    for (NSArray *taggedRange in _taggedRangeStack) {
-        NSString *tag = [taggedRange objectAtIndex:0];
-        NSRange range = [[taggedRange objectAtIndex:1] rangeValue];
+    [styledText setAttributes:[_styleDictionary objectForKey:@"$default"] range:NSMakeRange(0, [styledText length])];
+    
+    for (SLSTaggedRange *tag in tags) {
+        NSDictionary *tagAttributes = [_styleDictionary objectForKey:tag.tagName];
         
-        NSDictionary *attributes = [_attributeDict objectForKey:tag];
-        if (!attributes) {
-            self.error = [NSError errorWithDomain:SLSErrorDomain code:kSLSUnknownTagError userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Unknown tag" , nil), tag]}];
+        if (!tagAttributes) {
+            NSError *error = [NSError errorWithDomain:SLSErrorDomain code:kSLSUnknownTagError userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Unknown tag" , nil), tag.tagName]}];
+            
+            SetError(errorOut, error);
+            return NO;
         }
         
-        [_outAttStr setAttributes:[_attributeDict objectForKey:tag] range:range];
+        // Inner ranges are fully contained by by outer ranges, so assume attributes at
+        // the beginning of the range apply to the entire range.
+        
+        [styledText addAttributes:tagAttributes range:tag.range];
     }
-}
-
-- (NSMutableAttributedString *)outAttStr
-{
-    return [[_outAttStr retain] autorelease];
-}
-
-- (void)addAttributesForTag:(NSString *)tag inRange:(NSRange)range
-{
-    [_taggedRangeStack insertObject:@[tag, [NSValue valueWithRange:range]] atIndex:0];
-}
-
-- (void)setError:(NSError *)error
-{
-    [error retain];
-    [_error release];
-    _error = error;
-}
-
-- (NSError *)error
-{
-    return [[_error retain] autorelease];
+    
+    return YES;
 }
 
 @end
 
-void slasherror(yyscan_t scanner, SLSMarkupParser *ctx, const char *msg)
-{
-    ctx.error = [NSError errorWithDomain:SLSErrorDomain code:kSLSSyntaxError userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"Syntax error", nil)}];
-}
 
 NSString * const SLSErrorDomain = @"SLSErrorDomain";
