@@ -17,7 +17,7 @@
     if (self) {
         _strikethrough  = NO;
         _underline      = NO;
-        _ligatures      = YES;
+        _ligatures      = NO;
     }
     return self;
 }
@@ -39,13 +39,20 @@
         dictionary[NSBackgroundColorAttributeName] = _backgroundColor;
     }
 
-    dictionary[NSStrikethroughStyleAttributeName]   = @(_strikethrough);
-    dictionary[NSUnderlineStyleAttributeName]       = @(_underline);
+    if (_strikethrough) {
+        dictionary[NSStrikethroughStyleAttributeName] = @(_strikethrough);
+    }
+
+    if (_underline) {
+        dictionary[NSUnderlineStyleAttributeName] = @(_underline);
+    }
 
 
 
     // Advanced
-    dictionary[NSLigatureAttributeName]             = @(_ligatures);
+    if (_ligatures) {
+        dictionary[NSLigatureAttributeName] = @(_ligatures);
+    }
 
     if (_kern) {
         dictionary[NSKernAttributeName] = _kern;
@@ -78,5 +85,32 @@
 
     return dictionary;
 }
+
+#if TARGET_OS_IPHONE
+
+- (NSDictionary *)UIKitDictionary
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+    if (_font) {
+        dictionary[UITextAttributeFont] = _font;
+    }
+
+    if (_textColor) {
+        dictionary[UITextAttributeTextColor] = _textColor;
+    }
+
+    if (_shadowColor) {
+        dictionary[UITextAttributeTextShadowColor] = _shadowColor;
+    }
+
+    if (_shadowOffsetX || _shadowOffsetY) {
+        dictionary[UITextAttributeTextShadowOffset] = [NSValue valueWithUIOffset:UIOffsetMake([_shadowOffsetX floatValue], [_shadowOffsetY floatValue])];
+    }
+
+    return dictionary;
+}
+
+#endif
 
 @end

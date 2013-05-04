@@ -34,4 +34,8 @@
 
 - (NSDictionary *)dictionary;
 
+#if TARGET_OS_IPHONE
+- (NSDictionary *)UIKitDictionary;
+#endif
+
 @end
