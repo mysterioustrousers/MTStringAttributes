@@ -16,14 +16,13 @@
 
 // More
 @property (nonatomic, assign) BOOL               ligatures;                         // Allow some characters to be combined
-@property (nonatomic, strong) CGFloat            kern;                             // distance between characters
+@property (nonatomic, assign) CGFloat            kern;                             // distance between characters
 @property (nonatomic, assign) BOOL               strikethrough;
 @property (nonatomic, strong) id                 strikethroughColor;
 @property (nonatomic, assign) BOOL               underline;
 @property (nonatomic, strong) id                 underlineColor;
 @property (nonatomic, strong) id                 strokeColor;
 @property (nonatomic, assign) CGFloat            strokeWidth;
-@property (nonatomic, strong) NSString           *textEffect;                      // nil or NSTextEffectLetterpressStyle
 @property (nonatomic, strong) NSTextAttachment   *textAttachment;
 @property (nonatomic, strong) NSURL              *link;
 @property (nonatomic, assign) CGFloat            baselineOffset;
@@ -39,8 +38,8 @@
 @property (nonatomic, assign) CGFloat            headIndent;
 @property (nonatomic, assign) CGFloat            tailIndent;
 @property (nonatomic, assign) NSLineBreakMode    lineBreakMode;
-@property (nonatomic, assign) CGFloat            minLineHeight;
-@property (nonatomic, assign) CGFloat            maxLineHeight;
+@property (nonatomic, assign) CGFloat            minimumLineHeight;
+@property (nonatomic, assign) CGFloat            maximumLineHeight;
 @property (nonatomic, strong) NSTextTab          *tabStop;
 @property (nonatomic, strong) NSTextTab          *removeTabStop;
 @property (nonatomic, strong) NSArray            *tabStops;
@@ -55,10 +54,9 @@
 @property (nonatomic, assign) NSInteger          headerLevel;
 
 // Shadow
-@property (nonatomic, strong) CGFloat            shadowBlurRadius;
+@property (nonatomic, assign) CGFloat            *shadowBlurRadius;
 @property (nonatomic, strong) id                 shadowColor;                       // UIColor || NSColor
-@property (nonatomic, strong) CGFloat            shadowOffsetX;
-@property (nonatomic, strong) CGFloat            shadowOffsetY;
+@property (nonatomic, assign) CGSize             shadowOffset;
 
 - (NSDictionary *)dictionary;
 

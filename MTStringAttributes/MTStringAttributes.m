@@ -25,24 +25,23 @@
 @dynamic headIndent;
 @dynamic tailIndent;
 @dynamic lineBreakMode;
-@dynamic minLineHeight;
-@dynamic maxLineHeight;
-@dynamic *tabStop;
-@dynamic *removeTabStop;
-@dynamic *tabStops;
+@dynamic minimumLineHeight;
+@dynamic maximumLineHeight;
+@dynamic tabStop;
+@dynamic removeTabStop;
+@dynamic tabStops;
 @dynamic writingDirection;
 @dynamic lineHeightMultiple;
 @dynamic paragraphSpacingBefore;
 @dynamic defaultTabInterval;
-@dynamic *textBlocks;
-@dynamic *textLists;
+@dynamic textBlocks;
+@dynamic textLists;
 @dynamic hyphenationFactor;
 @dynamic tighteningFactorForTruncation;
 @dynamic headerLevel;
-@dynamic *shadowBlurRadius;
+@dynamic shadowBlurRadius;
 @dynamic shadowColor;
-@dynamic *shadowOffsetX;
-@dynamic *shadowOffsetY;
+@dynamic shadowOffset;
 
 - (id)init
 {
@@ -89,7 +88,7 @@
 - (void)setKern:(CGFloat)kern
 {
     _kern = kern;
-    _attributes[NSKernAttributeName] = kern;
+    _attributes[NSKernAttributeName] = @(kern);
 }
 
 - (void)setStrikethrough:(BOOL)strikethrough
@@ -125,13 +124,7 @@
 - (void)setStrokeWidth:(CGFloat)strokeWidth
 {
     _strokeWidth = strokeWidth;
-    _attributes[NSStrokeWidthAttributeName] = strokeWidth;
-}
-
-- (void)setTextEffect:(NSString *)textEffect
-{
-    _textEffect = textEffect;
-    _attributes[NSTextEffectAttributeName] = textEffect;
+    _attributes[NSStrokeWidthAttributeName] = @(strokeWidth);
 }
 
 - (void)setTextAttachment:(NSTextAttachment *)textAttachment
@@ -149,25 +142,25 @@
 - (void)setBaselineOffset:(CGFloat)baselineOffset
 {
     _baselineOffset = baselineOffset;
-    _attributes[NSBaselineOffsetAttributeName] = baselineOffset;
+    _attributes[NSBaselineOffsetAttributeName] = @(baselineOffset);
 }
 
 - (void)setObliqueness:(CGFloat)obliqueness
 {
     _obliqueness = obliqueness;
-    _attributes[NSObliquenessAttributeName] = obliqueness;
+    _attributes[NSObliquenessAttributeName] = @(obliqueness);
 }
 
 - (void)setExpansion:(CGFloat)expansion
 {
     _expansion = expansion;
-    _attributes[NSExpansionAttributeName] = expansion;
+    _attributes[NSExpansionAttributeName] = @(expansion);
 }
 
 - (void)setVerticalGlyphForm:(BOOL)verticalGlyphForm
 {
     _verticalGlyphForm = verticalGlyphForm;
-    _attributes[NSVerticalGlyphFormAttributeName] = verticalGlyphForm;
+    _attributes[NSVerticalGlyphFormAttributeName] = @(verticalGlyphForm);
 }
 
 - (id)forwardingTargetForSelector:(SEL)aSelector
@@ -299,21 +292,21 @@
 //{
 //
 //}
-//
-//
-//
+
+
+
 //#pragma mark - Shadow
 //
 //- (void)setShadowBlurRadius:(CGFloat)shadowBlurRadius
 //{
 //
 //}
-//
+
 //- (void)setShadowColor:(id)shadowColor
 //{
 //
 //}
-//
+
 //- (void)setShadowOffsetX:(CGFloat)shadowOffsetX
 //{
 //
@@ -322,7 +315,7 @@
 //- (void)setShadowOffsetY:(CGFloat)shadowOffsetY
 //{
 //    _shadowOffsetY = shadowOffsetY;
-//
+//    self.shadow.shadowOffset
 //}
 
 
@@ -345,7 +338,7 @@
 - (NSMutableParagraphStyle *)paragraphStyle
 {
     if (!_paragraphStyle) {
-        _paragraphStyle = [NSMutableParagraphStyle defaultParagraphStyle];
+        _paragraphStyle = [NSMutableParagraphStyle new];
     }
     return _paragraphStyle;
 }
