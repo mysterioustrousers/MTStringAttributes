@@ -16,7 +16,7 @@
 
 // More
 @property (nonatomic, assign) BOOL               ligatures;                         // Allow some characters to be combined
-@property (nonatomic, strong) CGFloat            *kern;                             // distance between characters
+@property (nonatomic, strong) CGFloat            kern;                             // distance between characters
 @property (nonatomic, assign) BOOL               strikethrough;
 @property (nonatomic, strong) id                 strikethroughColor;
 @property (nonatomic, assign) BOOL               underline;
@@ -32,8 +32,8 @@
 @property (nonatomic, assign) BOOL               verticalGlyphForm;
 
 // Paragraph Style
-@property (nonatomic, assign) CGFloat            *lineSpacing;
-@property (nonatomic, assign) CGFloat            *paragraphSpacing;
+@property (nonatomic, assign) CGFloat            lineSpacing;
+@property (nonatomic, assign) CGFloat            paragraphSpacing;
 @property (nonatomic, assign) NSTextAlignment    alignment;
 @property (nonatomic, assign) CGFloat            firstLineHeadIndent;
 @property (nonatomic, assign) CGFloat            headIndent;
@@ -55,10 +55,10 @@
 @property (nonatomic, assign) NSInteger          headerLevel;
 
 // Shadow
-@property (nonatomic, strong) CGFloat            *shadowBlurRadius;
+@property (nonatomic, strong) CGFloat            shadowBlurRadius;
 @property (nonatomic, strong) id                 shadowColor;                       // UIColor || NSColor
-@property (nonatomic, strong) CGFloat            *shadowOffsetX;
-@property (nonatomic, strong) CGFloat            *shadowOffsetY;
+@property (nonatomic, strong) CGFloat            shadowOffsetX;
+@property (nonatomic, strong) CGFloat            shadowOffsetY;
 
 - (NSDictionary *)dictionary;
 
