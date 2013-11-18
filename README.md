@@ -36,19 +36,6 @@ Some more advanced stuff
     attributes.outlineColor     = [UIColor blueColor];
     attributes.outlineWidth     = @(2);
 
-I might break out the properties for paragraph style later, but for now, provide an object
-
-    NSParagraphStyle *ps        = [[NSParagraphStyle alloc] init]
-    ps.alignment                = NSTextAlignmentLeft;
-    attributes.paragraphStyle   = ps;
-
-Shadow
-
-    attributes.shadowBlurRadius = @(1.4);
-    attributes.shadowColor      = [UIColor grayColor];
-    attributes.shadowOffsetX    = @(0.2);
-    attributes.shadowOffsetY    = @(0.3);
-
 Finally
 
     NSAttributedString *str     = [[NSAttributedString alloc] initWithString:@"The attributed string!"
@@ -56,7 +43,6 @@ Finally
 
 
 ## Parser
-
 
 Relying on [Slash](https://github.com/chrisdevereux/Slash), MTStringParser allows you to add styles to
 tags and then generate attributed strings from markup of those tags.
@@ -105,7 +91,7 @@ Now write the markup using the tags you defined styles for:
     uses <em>tags</em> to define where you want <em>styles</em> to be defined. You needed       \
     this <relative-time>%@</relative-time>.", timeAgo];
 
-And (  ( (BOOM) )  ), your attributed string:
+And boom, your attributed string:
 
     NSAttributedString *attributedString = [[MTStringParser sharedParser] attributedStringFromMarkup:markup];
 
