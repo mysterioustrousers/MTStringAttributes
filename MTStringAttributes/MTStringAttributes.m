@@ -11,7 +11,7 @@
 
 @interface MTStringAttributes ()
 @property (nonatomic, strong) NSMutableDictionary     *attributes;
-@property (nonatomic, strong) NSMutableParagraphStyle *paragraphStyle;
+@property (nonatomic, strong) NSMutableParagraphStyle *internalParagraphStyle;
 @property (nonatomic, strong) NSShadow                *shadow;
 @end
 
@@ -165,8 +165,8 @@
 
 - (id)forwardingTargetForSelector:(SEL)aSelector
 {
-    if ([self.paragraphStyle respondsToSelector:aSelector]) {
-        return self.paragraphStyle;
+    if ([self.internalParagraphStyle respondsToSelector:aSelector]) {
+        return self.internalParagraphStyle;
     }
     else if ([self.shadow respondsToSelector:aSelector]) {
         return self.shadow;
@@ -176,153 +176,26 @@
 
 
 
-//#pragma mark - Paragraph Style
-//
-//- (void)setLineSpacing:(CGFloat *)lineSpacing
-//{
-//    _lineSpacing = lineSpacing;
-//    self.paragraphStyle.lineSpacing = lineSpacing;
-//}
-//
-//- (void)setParagraphSpacing:(CGFloat *)paragraphSpacing
-//{
-//    _paragraphSpacing = paragraphSpacing;
-//    self.paragraphStyle.paragraphSpacing = paragraphSpacing;
-//}
-//
-//- (void)setAlignment:(NSTextAlignment)alignment
-//{
-//    _alignment = alignment;
-//    self.paragraphStyle.alignment = alignment;
-//}
-//
-//- (void)setFirstLineHeadIndent:(CGFloat)firstLineHeadIndent
-//{
-//    _firstLineHeadIndent = firstLineHeadIndent;
-//    self.paragraphStyle.firstLineHeadIndent = firstLineHeadIndent;
-//}
-//
-//- (void)setHeadIndent:(CGFloat)headIndent
-//{
-//    _headIndent = headIndent;
-//    self.paragraphStyle.headIndent = headIndent;
-//}
-//
-//- (void)setTailIndent:(CGFloat)tailIndent
-//{
-//    _tailIndent = tailIndent;
-//    self.paragraphStyle.tailIndent = tailIndent;
-//}
-//
-//- (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode
-//{
-//    _lineBreakMode = lineBreakMode;
-//    self.paragraphStyle.lineBreakMode = lineBreakMode;
-//}
-//
-//- (void)setMinLineHeight:(CGFloat)minLineHeight
-//{
-//    _minLineHeight = minLineHeight;
-//    self.paragraphStyle.minimumLineHeight = minLineHeight;
-//}
-//
-//- (void)setMaxLineHeight:(CGFloat)maxLineHeight
-//{
-//    _maxLineHeight = maxLineHeight;
-//    self.paragraphStyle.maximumLineHeight = maxLineHeight;
-//}
-//
-//- (void)setTabStop:(NSTextTab *)tabStop
-//{
-//    _tabStop = tabStop;
-//    self.paragraphStyle
-//}
-//
-//- (void)setRemoveTabStop:(NSTextTab *)removeTabStop
-//{
-//
-//}
-//
-//- (void)setTabStops:(NSArray *)tabStops
-//{
-//
-//}
-//
-//- (void)setWritingDirection:(NSWritingDirection)writingDirection
-//{
-//
-//}
-//
-//- (void)setLineHeightMultiple:(CGFloat)lineHeightMultiple
-//{
-//
-//}
-//
-//- (void)setParagraphSpacingBefore:(CGFloat)paragraphSpacingBefore
-//{
-//
-//}
-//
-//- (void)setDefaultTabInterval:(CGFloat)defaultTabInterval
-//{
-//
-//}
-//
-//- (void)setTextBlocks:(NSArray *)textBlocks
-//{
-//
-//}
-//
-//- (void)setTextLists:(NSArray *)textLists
-//{
-//
-//}
-//
-//- (void)setHyphenationFactor:(CGFloat)hyphenationFactor
-//{
-//
-//}
-//
-//- (void)setTighteningFactorForTruncation:(CGFloat)tighteningFactorForTruncation
-//{
-//
-//}
-//
-//- (void)setHeaderLevel:(NSInteger)headerLevel
-//{
-//
-//}
+#pragma mark - Paragraph Style
+
+- (void)setParagraphStyle:(NSParagraphStyle *)paragraphStyle
+{
+    self.internalParagraphStyle = [paragraphStyle mutableCopy];
+}
+
+- (NSParagraphStyle *)paragraphStyle
+{
+    return [self.internalParagraphStyle copy];
+}
 
 
 
-//#pragma mark - Shadow
-//
-//- (void)setShadowBlurRadius:(CGFloat)shadowBlurRadius
-//{
-//
-//}
-
-//- (void)setShadowColor:(id)shadowColor
-//{
-//
-//}
-
-//- (void)setShadowOffsetX:(CGFloat)shadowOffsetX
-//{
-//
-//}
-//
-//- (void)setShadowOffsetY:(CGFloat)shadowOffsetY
-//{
-//    _shadowOffsetY = shadowOffsetY;
-//    self.shadow.shadowOffset
-//}
-
+#pragma mark - Dictionary
 
 - (NSDictionary *)dictionary
 {
-    if (_paragraphStyle) {
-        self.attributes[NSParagraphStyleAttributeName] = self.paragraphStyle;
+    if (_internalParagraphStyle) {
+        self.attributes[NSParagraphStyleAttributeName] = self.internalParagraphStyle;
     }
     if (_shadow) {
         self.attributes[NSShadowAttributeName] = self.shadow;
@@ -335,12 +208,12 @@
 
 #pragma mark - Private
 
-- (NSMutableParagraphStyle *)paragraphStyle
+- (NSMutableParagraphStyle *)internalParagraphStyle
 {
-    if (!_paragraphStyle) {
-        _paragraphStyle = [NSMutableParagraphStyle new];
+    if (!_internalParagraphStyle) {
+        _internalParagraphStyle = [NSMutableParagraphStyle new];
     }
-    return _paragraphStyle;
+    return _internalParagraphStyle;
 }
 
 - (NSShadow *)shadow

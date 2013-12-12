@@ -31,6 +31,7 @@
 @property (nonatomic, assign) BOOL               verticalGlyphForm;
 
 // Paragraph Style
+@property (nonatomic, strong) NSParagraphStyle   *paragraphStyle;
 @property (nonatomic, assign) CGFloat            lineSpacing;
 @property (nonatomic, assign) CGFloat            paragraphSpacing;
 @property (nonatomic, assign) NSTextAlignment    alignment;
