@@ -1,7 +1,7 @@
 MTStringAttributes
 ==================
 
-An easier way to create an attributes dictionary for NSAttributedString
+An easier way to create an attributes dictionary for NSAttributedString (for iOS and OSX)
 
 
 ## Installation
@@ -24,17 +24,17 @@ Create an attributes object
 Set some basic properties
 
     attributes.font             = nil;
-    attributes.textColor        = [UIColor redColor];
-    attributes.backgroundColor  = [UIColor blackColor];
+    attributes.textColor        = [UIColor redColor];     //or NSColor in OSX
+    attributes.backgroundColor  = [UIColor blackColor];   //or NSColor in OSX
     attributes.strikethrough    = YES;
     attributes.underline        = YES;
 
 Some more advanced stuff
 
     attributes.ligatures        = YES;
-    attributes.kern             = @(1);
-    attributes.outlineColor     = [UIColor blueColor];
-    attributes.outlineWidth     = @(2);
+    attributes.kern             = 1.0f;
+    attributes.outlineColor     = [UIColor blueColor];   //or NSColor in OSX
+    attributes.outlineWidth     = 2.0f;
 
 Finally
 
