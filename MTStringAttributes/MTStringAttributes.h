@@ -59,6 +59,11 @@
 @property (nonatomic, strong) id                 shadowColor;                       // UIColor || NSColor
 @property (nonatomic, assign) CGSize             shadowOffset;
 
+// Outline
+@property (nonatomic, strong) id                 outlineColor;
+@property (nonatomic, assign) CGFloat            outlineWidth;
+
+
 - (NSDictionary *)dictionary;
 
 @end
