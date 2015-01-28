@@ -174,6 +174,21 @@
     return [super forwardingTargetForSelector:aSelector];
 }
 
+#pragma mark - outline stroke
+
+- (void)setOutlineColor:(id)outlineColorNew
+{
+  _outlineColor = outlineColorNew;
+  _attributes[NSStrokeColorAttributeName] = outlineColorNew;
+}
+
+
+- (void)setOutlineWidth:(CGFloat)outlineWidthNew
+{
+  _outlineWidth = outlineWidthNew;
+  _attributes[NSStrokeWidthAttributeName] = @(outlineWidthNew);
+}
+
 
 
 #pragma mark - Paragraph Style
